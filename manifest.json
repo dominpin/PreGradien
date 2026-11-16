@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "PreGradien",
+  "short_name": "PreGradien",
+  "version": "0.2.0",
+  "description": "Crossfades between SoundCloud tracks: beat-matched Smart Mix with bass swap, equal-power fallback, silence trim.",
+  "minimum_chrome_version": "111",
+  "permissions": [
+    "scripting"
+  ],
+  "host_permissions": [
+    "*://soundcloud.com/*",
+    "*://api-v2.soundcloud.com/*",
+    "*://*.sndcdn.com/*",
+    "*://*.soundcloud.cloud/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js"
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://soundcloud.com/*"
+      ],
+      "js": [
+        "src/main/state.js",
+        "src/main/hook.js",
+        "src/main/silence.js",
+        "src/main/analysis.js",
+        "src/main/queue.js",
+        "src/main/mixer.js"
+      ],
+      "world": "MAIN",
+      "run_at": "document_start",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "*://soundcloud.com/*"
+      ],
+      "js": [
+        "src/content/bridge.js"
+      ],
+      "world": "ISOLATED",
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ]
+}
